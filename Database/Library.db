@@ -1,0 +1,17 @@
+BookID
+Title
+Author
+Category
+ISBN
+PublishedYear
+CopiesAvailable
+Active
+
+
+MemberID
+MemberName
+Age
+Phone
+Email
+MembershipType
+Active
