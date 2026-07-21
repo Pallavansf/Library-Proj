@@ -21,3 +21,11 @@ class BookService:
         
     def delete_book(self, bookid):
         return self.repo_book.delete(bookid)         
+    
+    def get_book(bookid):
+
+    def is_book_available(bookid):
+
+    def decrease_available_copies(bookid):
+
+    def increase_available_copies(bookid):

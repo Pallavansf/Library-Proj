@@ -19,3 +19,9 @@ class MemberService:
 
     def delete_member(self, memberid):
         return self.repo_member.delete(memberid)
+    
+    def get_member(memberid):
+
+    def is_member_active(memberid):
+
+    def can_borrow(memberid):
