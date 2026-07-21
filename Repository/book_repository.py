@@ -32,7 +32,7 @@ class BookRepository:
    """,(bookid,))
   curval =self.dbm.cursor.fetchone()
   if curval:
-   self.book = Book(
+   book = Book(
     BookID = curval[0], 
     Title = curval[1], 
     Author = curval[2], 
@@ -42,7 +42,7 @@ class BookRepository:
     CopiesAvailable = curval[6],
     IsActive = bool(curval[7])
    )
-   return self.book
+   return book
 
 
  def get_all(self):
@@ -66,7 +66,7 @@ class BookRepository:
      ) 
      Bookes.append(books)
     return Bookes
-  return None 
+  return [] 
 
  def update(self,book):
   self.dbm.cursor.execute(

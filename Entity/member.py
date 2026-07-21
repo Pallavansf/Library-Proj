@@ -1,13 +1,13 @@
 class Member:
 
- def __init__(self, MemberID, MemberName, Age, Phone, Email, MembershipType):
+ def __init__(self, MemberID, MemberName, Age, Phone, Email, MembershipType,IsActive=True):
     self._memberid = MemberID
     self._membername = MemberName
     self._age = Age
     self._phone = Phone
     self._email = Email
     self._membershiptype = MembershipType
-    self._active = True
+    self._active = IsActive
 
  def update_contact(self, newphone, newemail):
   if self._active:
@@ -17,6 +17,10 @@ class Member:
     return True
 
  def upgrade_membership(self,newmemtype):
+   if self._membershiptype == newmemtype:
+    print("Already using this membership.")
+    return False
+   
    if self._active:
      self._membershiptype = newmemtype
      print(f"Membership has been updated {self._membershiptype}")

@@ -1,22 +1,23 @@
-First Business Rule
+from Entity.book import Book
+from Repository.book_repository import BookRepository
 
-A book cannot be borrowed if:
+class BookService:
+    
+    def __init__(self):
+        self.repo_book  = BookRepository()
 
-CopiesAvailable == 0
+    def add_book(self, book):
+        self.repo_book.insert(book)
+        return True
 
-Where should this rule go?
+    def get_book(self, bookid):
+        return self.repo_book.get(bookid)        
 
-😁
-
-I already know you'll answer:
-
-Entity
-
-Exactly.
-
-Inside
-
-borrow_book()
-Second Business Rule
-
-A deactivated member cannot borrow books.
+    def get_all_books(self):
+        return self.repo_book.get_all()
+        
+    def update_book(self, book):
+        return self.repo_book.update(book)
+        
+    def delete_book(self, bookid):
+        return self.repo_book.delete(bookid)         

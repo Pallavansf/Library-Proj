@@ -45,14 +45,14 @@ class DBManager:
    
    self.cursor.execute(
     """
-        CREATE TABLE IF NOT EXISTS LOAN( 
-    LoanID      INTEGER  Primary Key,          
-    BookID      INTEGER   NOT NULL,
-    MemberID    INTEGER   NOT NULL,
-    BorrowDate  TEXT     NOT NULL,             
-    DueDate     TEXT     NOT NULL ,            
-    ReturnDate  TEXT   ,                 
-    Status      TEXT     NOT NULL,
+    CREATE TABLE IF NOT EXISTS LOAN( 
+    LoanID      INTEGER Primary Key,          
+    BookID      INTEGER NOT NULL,
+    MemberID    INTEGER NOT NULL,
+    BorrowDate  TEXT NOT NULL,             
+    DueDate     TEXT NOT NULL ,            
+    ReturnDate  TEXT,                 
+    Status      TEXT NOT NULL CHECK (Status IN ('BORROWED','RETURNED','OVERDUE')),
     FOREIGN KEY (BookID) REFERENCES BOOK (BookID),
     FOREIGN KEY (MemberID) REFERENCES MEMBER (MemberID))
     """)
