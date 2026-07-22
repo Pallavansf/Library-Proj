@@ -22,10 +22,40 @@ class BookService:
     def delete_book(self, bookid):
         return self.repo_book.delete(bookid)         
     
-    def get_book(bookid):
+    def get_book(self, bookid):
+        return self.repo_book.get(bookid)
 
-    def is_book_available(bookid):
+    def is_book_available(self, bookid):
+         book= self.repo_book.get(bookid)
+         if not book:
+             return False
+         
+         if not book._active:
+             return False
+         
+         if not book._copiesavl<=0:
+             return False
+         
+         return True  
 
-    def decrease_available_copies(bookid):
+    def decrease_available_copies(self,bookid):
+        book = self.repo_book.get(bookid)
 
-    def increase_available_copies(bookid):
+        if not book:
+         return False   
+        
+        if book._copiesavl <=0:
+            return False
+        
+        book._copiesavl-=1
+        return self.repo_book.update(book)
+        
+
+    def increase_available_copies(self, bookid):
+       book =  self.repo_book.get(bookid)
+
+       if not book:
+           return False       
+       
+       book._copiesavl+=1
+       return self.repo_book.update(book)

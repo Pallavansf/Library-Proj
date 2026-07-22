@@ -20,8 +20,27 @@ class MemberService:
     def delete_member(self, memberid):
         return self.repo_member.delete(memberid)
     
-    def get_member(memberid):
+    def get_member(self,memberid):
+        return self.repo_member.get_member(memberid)        
 
-    def is_member_active(memberid):
+    def is_member_active(self,memberid):
+        member = self.repo_member.get_member(memberid)   
+        
+        if not member:
+          return False
 
-    def can_borrow(memberid):
+        return member._active
+
+    def can_borrow(self,memberid):
+      member = self.repo_member.get_member(memberid) 
+      if not member:
+        return False  
+      
+      if not bool(member._active):
+         return False
+      
+      if not (member._membershiptype):
+          return False
+      
+      return True
+      
