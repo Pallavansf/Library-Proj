@@ -119,6 +119,19 @@ class LoanService:
         overdue_loans = self.loan_repo.get_overdue_loans()
         if not overdue_loans:
           return ServiceResult( success=True, message="Overdues not found.",data =[] )
-     
+             
         return ServiceResult( success=False, message="Overdues found.", data= overdue_loans)
+    
+    def renew_loan(self, loanid):
+       loan_stat = self.get_loan(loanid)
+       
+       extend_date = loan_stat._duedate+timedelta(days=15)     
+       if not loan_stat:
+          return ServiceResult( success=False, message="No loan found.", data= [])
+       
+       else:   
+        loan_stat._duedate = extend_date
+        self.loan_repo.update(loan_stat)
+        return ServiceResult( success=True, message="Due is extended Successfully.", data= loan_stat)
+
 
