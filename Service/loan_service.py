@@ -9,9 +9,7 @@ from Service.member_service import MemberService
 
 class LoanService:
 
-    def __init__(self):
-        self.book_repo = BookRepository()
-        self.member_repo = MemberRepository()
+    def __init__(self):        
         self.loan_repo = LoanRepository()
         self.member_service = MemberService()
         self.library_service = BookService()
@@ -68,11 +66,12 @@ class LoanService:
         )
 
      return_date = datetime.today()
-     fine = 0
+     fine = 0     
+     FINE_PER_DAY = 15
 
      if return_date > loan._duedate:
         overdue_days = (return_date - loan._duedate).days
-        fine = overdue_days * 15
+        fine = overdue_days * FINE_PER_DAY
 
      loan._returndate = return_date
      loan._status = "RETURNED"
@@ -144,8 +143,9 @@ class LoanService:
             success=False,
             message="Member is not eligible for renewal."
         )
+     LOAN_DAYS = 15
 
-     loan._duedate += timedelta(days=15)
+     loan._duedate += timedelta(days=LOAN_DAYS)
 
      self.loan_repo.update(loan)
 
