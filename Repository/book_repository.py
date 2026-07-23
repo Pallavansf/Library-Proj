@@ -94,5 +94,29 @@ class BookRepository:
    )
   self.dbm.commit()
   return True
- 
+
+ def getbook_name(self,bookname):
+   search_pattern = f"%{bookname}%"
+   self.dbm.cursor.execute(
+    """
+    SELECT * FROM BOOK WHERE Title LIKE ?
+    """,(search_pattern,)
+   )
+
+   get_books = self.dbm.cursor.fetchall()
+   booklist_ =[]
+   if get_books:
+    for j in get_books:
+     bookslist = Book (
+      BookID = j[0],
+      Title=j[1],
+      Author=j[2],
+      Category=j[3],
+      ISBN=j[4],
+      PublishedYear=j[5],
+      CopiesAvailable=j[6],
+      IsActive=bool(j[7])
+     )
+     booklist_.append(bookslist)
+    return booklist_
 

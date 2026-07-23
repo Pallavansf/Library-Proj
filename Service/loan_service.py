@@ -1,5 +1,3 @@
-from Repository.book_repository import BookRepository
-from Repository.member_repository import MemberRepository
 from Repository.loan_repository import LoanRepository
 from Entity.loan import Loan
 from datetime import datetime,timedelta
@@ -16,54 +14,36 @@ class LoanService:
 
     def borrow_book(self, memberid, bookid):
       borrow_date = datetime.today()
-      due_date = borrow_date + timedelta(days=15)            
+      due_date = borrow_date + timedelta(days=15)  
 
+      member_result = self.member_service.can_borrow(memberid)
 
-      if not self.member_service.can_borrow(memberid):
-          return ServiceResult(
-          success=False,
-         message="Member is inactive."
-          )
+      if not member_result.success:        
+        return ServiceResult( success=False, message="Member is inactive." )
 
       if not self.library_service.is_book_available(bookid):
-         return ServiceResult(
-            success=False,
-           message="Book is not available for borrowing."
-        )
+         return ServiceResult( success=False, message="Book is not available for borrowing." )
       
       if not self.library_service.decrease_available_copies(bookid):
-          return ServiceResult(
-              success= False, message= "No available copy to be issued"
-          )
+          return ServiceResult( success= False, message= "No available copy to be issued")
        
       borrow_trans = Loan(None, bookid, memberid, borrow_date, due_date, ReturnDate=None, Status="BORROWED")
      
       if not self.loan_repo.insert(borrow_trans):
        self.library_service.increase_available_copies(bookid)
-       return ServiceResult(
-        success=False,
-       message="Transaction Failed & book returned to the library."
-)
-      return ServiceResult(
-      success=True,
-       message="Requested book is issued", data = borrow_trans
-)
+       return ServiceResult( success=False,  message="Transaction Failed & book returned to the library.")
+      
+      return ServiceResult( success=True, message="Requested book is issued", data = borrow_trans )
 
     def return_book(self, loanid):
 
      loan = self.loan_repo.get(loanid)
 
      if not loan:
-        return ServiceResult(
-            success=False,
-            message="Check the loan id."
-        )
+        return ServiceResult( success=False, message="Check the loan id." )
 
      if loan._status == "RETURNED":
-        return ServiceResult(
-            success=False,
-            message="This loan has already been settled."
-        )
+        return ServiceResult( success=False, message="This loan has already been settled." )
 
      return_date = datetime.today()
      fine = 0     
@@ -79,11 +59,7 @@ class LoanService:
      self.loan_repo.update(loan)
      self.library_service.increase_available_copies(loan._bookid)
 
-     return ServiceResult(
-        success=True,
-        message="Book returned successfully.",
-        data=fine
-     )    
+     return ServiceResult( success=True, message="Book returned successfully.", data=fine )    
               
 
     def get_loan(self, loanid):
@@ -133,26 +109,16 @@ class LoanService:
      loan = loan_result.data
 
      if loan._status == "RETURNED":
-        return ServiceResult(
-            success=False,
-            message="Returned loans cannot be renewed."
-        )
+        return ServiceResult(success=False, message="Returned loans cannot be renewed." )
 
      if not self.member_service.can_borrow(loan._memberid):
-        return ServiceResult(
-            success=False,
-            message="Member is not eligible for renewal."
-        )
+        return ServiceResult( success=False, message="Member is not eligible for renewal." )
      LOAN_DAYS = 15
 
      loan._duedate += timedelta(days=LOAN_DAYS)
 
      self.loan_repo.update(loan)
 
-     return ServiceResult(
-        success=True,
-        message="Loan renewed successfully.",
-        data=loan
-      )
+     return ServiceResult(success=True, message="Loan renewed successfully.", data=loan )
  
 
