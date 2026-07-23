@@ -20,10 +20,7 @@ class BookService:
         return self.repo_book.update(book)
         
     def delete_book(self, bookid):
-        return self.repo_book.delete(bookid)         
-    
-    def get_book(self, bookid):
-        return self.repo_book.get(bookid)
+        return self.repo_book.delete(bookid)     
 
     def is_book_available(self, bookid):
          book= self.repo_book.get(bookid)
@@ -33,7 +30,7 @@ class BookService:
          if not book._active:
              return False
          
-         if not book._copiesavl<=0:
+         if book._copiesavl<=0:
              return False
          
          return True  

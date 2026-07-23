@@ -52,37 +52,39 @@ class LoanService:
 )
 
     def return_book(self, loanid):
-      
-      loan = self.loan_repo.get(loanid)      
-      
-      if not loan:
-         return ServiceResult(success=False,
-                message="Check the loan id")
-      
-      if (loan._status) == 'RETURNED':
-         return ServiceResult(success=False,
-                message="This loan has been already setlled")
-      
-      return_date = datetime.today()
-      if datetime.today() > (loan._duedate):
-         overdue_days = (datetime.today() - loan._duedate).days
-         fine = overdue_days*15         
-         loan._returndate = return_date
-         loan._status = 'RETURNED'
 
-         self.loan_repo.update(loan)
-         self.library_service.increase_available_copies(loan._bookid)
-         return ServiceResult(success=True,
-                message="This Book has been received", data =fine )
+     loan = self.loan_repo.get(loanid)
 
-      else:         
-         loan._returndate = return_date
-         loan._status = 'RETURNED'
+     if not loan:
+        return ServiceResult(
+            success=False,
+            message="Check the loan id."
+        )
 
-         self.loan_repo.update(loan)
-         self.library_service.increase_available_copies(loan._bookid)
-         return ServiceResult(success=True,
-                message="This Book has been received")      
+     if loan._status == "RETURNED":
+        return ServiceResult(
+            success=False,
+            message="This loan has already been settled."
+        )
+
+     return_date = datetime.today()
+     fine = 0
+
+     if return_date > loan._duedate:
+        overdue_days = (return_date - loan._duedate).days
+        fine = overdue_days * 15
+
+     loan._returndate = return_date
+     loan._status = "RETURNED"
+
+     self.loan_repo.update(loan)
+     self.library_service.increase_available_copies(loan._bookid)
+
+     return ServiceResult(
+        success=True,
+        message="Book returned successfully.",
+        data=fine
+     )    
               
 
     def get_loan(self, loanid):
@@ -118,9 +120,9 @@ class LoanService:
     def get_overdue_loans(self):
         overdue_loans = self.loan_repo.get_overdue_loans()
         if not overdue_loans:
-          return ServiceResult( success=True, message="Overdues not found.",data =[] )
+          return ServiceResult( success=False, message="Overdues not found.",data =[] )
              
-        return ServiceResult( success=False, message="Overdues found.", data= overdue_loans)
+        return ServiceResult( success=True, message="Overdues found.", data= overdue_loans)
     
     def renew_loan(self, loanid):
 
