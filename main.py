@@ -128,3 +128,7 @@ class BookMenu:
 # 2. All Members
 # 3. Overdue Books
 # 4. Exit
+
+if __name__ == "__main__":
+    menu = BookMenu()
+    menu.bookchoose_option()
