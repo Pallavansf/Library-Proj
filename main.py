@@ -1,4 +1,4 @@
-from UI.book_menu import BookMenu, MemberMenu
+from UI.book_menu import BookMenu, MemberMenu,LoanMenu,LoanReport
 
 def main():
     while True:
@@ -22,10 +22,10 @@ LIBRARY MANAGEMENT SYSTEM
             MemberMenu().Member_chooseOption()
 
         elif choice == "3":
-            print("Loan Menu - Coming Soon")
+            LoanMenu().Loan_chooseOption()
 
         elif choice == "4":
-            print("Reports - Coming Soon")
+           LoanReport().Report_chooseOption()
 
         elif choice == "5":
             print("Goodbye!")
