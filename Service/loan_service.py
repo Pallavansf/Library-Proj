@@ -13,27 +13,29 @@ class LoanService:
         self.library_service = BookService()
 
     def borrow_book(self, memberid, bookid):
-      borrow_date = datetime.today()
-      due_date = borrow_date + timedelta(days=15)  
+     LOAN_DAYS = 15
 
-      member_result = self.member_service.can_borrow(memberid)
+     borrow_date = datetime.today()
+     due_date = borrow_date + timedelta(days=LOAN_DAYS)
 
-      if not member_result.success:        
-        return ServiceResult( success=False, message="Member is inactive." )
+     member_result = self.member_service.can_borrow(memberid)
 
-      if not self.library_service.is_book_available(bookid):
-         return ServiceResult( success=False, message="Book is not available for borrowing." )
-      
-      if not self.library_service.decrease_available_copies(bookid):
-          return ServiceResult( success= False, message= "No available copy to be issued")
-       
-      borrow_trans = Loan(None, bookid, memberid, borrow_date, due_date, ReturnDate=None, Status="BORROWED")
-     
-      if not self.loan_repo.insert(borrow_trans):
-       self.library_service.increase_available_copies(bookid)
-       return ServiceResult( success=False,  message="Transaction Failed & book returned to the library.")
-      
-      return ServiceResult( success=True, message="Requested book is issued", data = borrow_trans )
+     if not member_result.success:
+        return member_result
+
+     if not self.library_service.is_book_available(bookid):
+        return ServiceResult( success=False, message="Book is not available for borrowing." )
+
+     if not self.library_service.decrease_available_copies(bookid):
+        return ServiceResult( success=False, message="No available copy to be issued." )
+
+     borrow_trans = Loan( None, bookid, memberid, borrow_date, due_date, ReturnDate=None, Status="BORROWED" )
+
+     if not self.loan_repo.insert(borrow_trans):
+        self.library_service.increase_available_copies(bookid)
+        return ServiceResult( success=False, message="Transaction failed. Book returned to the library." )
+
+     return ServiceResult( success=True, message="Requested book has been issued.", data=borrow_trans )
 
     def return_book(self, loanid):
 

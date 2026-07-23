@@ -47,9 +47,9 @@ class BookMenu:
    choice = input("\nChoose the following option: ")
 
    if choice == "1":
-    self.book_input = self.validate_addbook()
-    if self.book_input:
-     result = self.libserv.add_book(self.book_input)
+    book_input = self.validate_addbook()
+    if book_input:
+     result = self.libserv.add_book(book_input)     
      print(result.message)     
     continue   
 
@@ -61,28 +61,35 @@ class BookMenu:
      continue
      
    elif choice == "3":
-    self.list_books = self.libserv.get_all_books()
-    if self.list_books:
-     self.list_books
-
+    list_books = self.libserv.get_all_books()
+    if list_books.success:
+     for book in list_books.data:
+        print(book)
      continue
+
    elif choice == "4":
-    self.update_book = self.validate_addbook()
-    self.libserv.update_book(self.update_book)
-    print(f"Book has been updated")
+    update_book = self.validate_addbook()
+    result = self.libserv.update_book(update_book)
+    print(result.message)
     continue
+   
    elif choice == "5":
-    self.libserv.delete_book(int(input("Enter the book id to remove")))
-    print(f"Book has been removed")
+    result = self.libserv.delete_book(int(input("Enter the book id to remove")))
+    print(result.message)   
     continue
+   
    elif choice == "6":
-    self.list_book = self.libserv.search_book(input("Enter a book name"))
-    if self.list_book:
-     self.list_book
-     continue    
+    list_book = self.libserv.search_book(input("Enter a book name"))
+    print(list_book.message)
+
+    if list_book.success:
+      print(list_book.data)
+    continue    
+
    elif choice == "7" or choice == "EXIT":
     print(f"Returning to Main Menu")
     break
+   
    else:
     print(f"Enter an Valid Option from the menu")  
 
