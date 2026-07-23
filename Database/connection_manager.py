@@ -6,6 +6,7 @@ class DBManager:
    self.conn = sqlite3.connect("Database/Library.db")
    self.cursor = self.conn.cursor()
    self.cursor.execute("PRAGMA foreign_keys = ON")
+   self.create_table()
 
   def commit(self):
    self.conn.commit()   

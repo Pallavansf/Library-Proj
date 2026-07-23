@@ -10,6 +10,18 @@ class Book:
     self._copiesavl =  CopiesAvailable
     self._active = IsActive
 
+ def __str__(self):
+   return (
+            f"Book ID      : {self._bookid}\n"
+            f"Title        : {self._title}\n"
+            f"Author       : {self._author}\n"
+            f"Category     : {self._category}\n"
+            f"ISBN         : {self._isbn}\n"
+            f"Published Yr : {self._publishedyear}\n"
+            f"Copies Avail : {self._copiesavl}\n"
+            f"Active       : {'Yes' if self._active else 'No'}"
+        )   
+
  def borrow_book(self):
     if not self._active:
       print(f"Book '{self._title}' is inactive and cannot be borrowed.")

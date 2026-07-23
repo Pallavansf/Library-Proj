@@ -28,12 +28,12 @@ class BookMenu:
 
  def validate_addbook(self):
   BookID = int(input("Enter the book id : ")) 
-  Title = input("Enter the book title") 
-  Author = input ("Enter the book Author")
-  Category = input ("Enter the book Categoty")
-  ISBN = int(input ("Enter the ISBN"))
-  PublishedYear = int(input ("Enter the Publication Year"))
-  CopiesAvailable = int(input ("Enter the Enter the number of copy"))
+  Title = input("Enter the book title : ") 
+  Author = input ("Enter the book Author : ")
+  Category = input ("Enter the book Categoty : ")
+  ISBN = int(input ("Enter the ISBN : "))
+  PublishedYear = int(input ("Enter the Publication Year : "))
+  CopiesAvailable = int(input ("Enter the Enter the number of copy : "))
 
   book = Book(BookID,Title,Author,Category,ISBN,PublishedYear, CopiesAvailable)
 
@@ -44,6 +44,7 @@ class BookMenu:
   while True:
    
    print(self.bookmenus())
+
    choice = input("\nChoose the following option: ")
 
    if choice == "1":
@@ -65,6 +66,7 @@ class BookMenu:
     if list_books.success:
      for book in list_books.data:
         print(book)
+        print("-" * 50)
      continue
 
    elif choice == "4":
