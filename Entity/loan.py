@@ -11,6 +11,17 @@ class Loan:
       self._returndate = ReturnDate
       self._status = Status
 
+    def __str__ (self):
+      return(
+        f"Loan id : {self._loanid}\n"
+        f"Book id : {self._bookid}\n"
+        f"Member id : {self._memberid}\n"
+        f"Borrow Date : {self._borrowdate}\n"
+        f"Due Date : {self._duedate}\n"
+        f"Return Date : {self._returndate}\n"
+        f"Status : {"yes" if self._status else "No"}\n"
+      )
+
     def mark_returned(self, returndate):
        if not self._returndate:
         self._returndate = returndate

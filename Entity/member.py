@@ -9,6 +9,17 @@ class Member:
     self._membershiptype = MembershipType
     self._active = IsActive
 
+ def __str__(self)  :
+  return (
+       f"Member id : {self._memberid}\n"
+       f"Member Name : {self._membername}\n" 
+       f" Age : {self._age}\n" 
+       f"Phone : {self._phone}\n"
+       f"Email : {self._email}\n"
+       f"Memberhip : {self._membershiptype}\n"
+       f"Active : {"yes" if self._active else "no"}\n"
+  )
+
  def update_contact(self, newphone, newemail):
   if self._active:
     self._phone = newphone
