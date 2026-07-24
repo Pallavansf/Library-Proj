@@ -1,5 +1,6 @@
 from Repository.book_repository import BookRepository
 from Service.Message import ServiceResult
+from Utils import logger
 
 class BookService:
     
@@ -20,6 +21,7 @@ class BookService:
         if not book:
             return ServiceResult( success=False, message="Book not found.")
 
+        logger.info("Book Added", "ABC123")
         return ServiceResult( success=True, message="Book found.", data=book)
 
     def get_all_books(self):
